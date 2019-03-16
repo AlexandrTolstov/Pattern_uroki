@@ -1,0 +1,119 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PatternAbstractFabric
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Aplication win = new Aplication(new WinFactory());
+            win.CreatButton();
+            win.CreatCheckBox();
+
+            Aplication mac = new Aplication(new MacFactory());
+            mac.CreatButton();
+            mac.CreatCheckBox();
+
+            Console.ReadLine();
+        }
+    }
+    //абстрактный класс - оружие
+    abstract class Button
+    {
+        public abstract void CreatButton();
+    }
+    // абстрактный класс движение
+    abstract class CheckBox
+    {
+        public abstract void CreatCheckBox();
+    }
+
+    // класс арбалет
+    class WinButton : Button
+    {
+        public override void CreatButton()
+        {
+            Console.WriteLine("WinButton");
+        }
+    }
+    // класс меч
+    class MacButton : Button
+    {
+        public override void CreatButton()
+        {
+            Console.WriteLine("MacButton");
+        }
+    }
+
+    class WinCheckBox : CheckBox
+    {
+        public override void CreatCheckBox()
+        {
+            Console.WriteLine("WinCheckBox");
+        }
+    }
+    // класс меч
+    class MacCheckBox : CheckBox
+    {
+        public override void CreatCheckBox()
+        {
+            Console.WriteLine("MacCheckBox");
+        }
+    }
+
+    // класс абстрактной фабрики
+    abstract class GuiFactory
+    {
+        public abstract Button CreateBotton();
+        public abstract CheckBox CreateCheckBox();
+    }
+    // Фабрика создания летящего героя с арбалетом
+    class WinFactory : GuiFactory
+    {
+        public override Button CreateBotton()
+        {
+            return new WinButton();
+        }
+
+        public override CheckBox CreateCheckBox()
+        {
+            return new WinCheckBox();
+        }
+    }
+    // Фабрика создания бегущего героя с мечом
+    class MacFactory : GuiFactory
+    {
+        public override Button CreateBotton()
+        {
+            return new MacButton();
+        }
+
+        public override CheckBox CreateCheckBox()
+        {
+            return new MacCheckBox();
+        }
+    }
+    // клиент - сам супергерой
+    class Aplication
+    {
+        private Button button;
+        private CheckBox checkBox;
+        public Aplication(GuiFactory Gfactory)
+        {
+            button = Gfactory.CreateBotton();
+            checkBox = Gfactory.CreateCheckBox();
+        }
+        public void CreatButton()
+        {
+            button.CreatButton();
+        }
+        public void CreatCheckBox()
+        {
+            checkBox.CreatCheckBox();
+        }
+    }
+}
